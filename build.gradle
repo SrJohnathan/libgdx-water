@@ -1,0 +1,28 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:3.6.3"
+    }
+}
+
+group 'io.github.srjohnathan'
+version '1.0-SNAPSHOT'
+def  isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+
+allprojects {
+    ext {
+        minSdk = 16
+        targetSdk = 30
+        compileSdk = 30
+        buildTools = '30.0.3'
+
+    }
+
+
+}

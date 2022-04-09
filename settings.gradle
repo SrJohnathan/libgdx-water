@@ -1,0 +1,5 @@
+rootProject.name = 'libwater'
+include 'gdx-water-core'
+include 'gdx-water-desktop'
+include 'gdx-water-android'
+
