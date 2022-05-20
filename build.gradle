@@ -17,12 +17,30 @@ def  isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 allprojects {
     ext {
-        minSdk = 16
+        minSdk = 19
         targetSdk = 30
         compileSdk = 30
         buildTools = '30.0.3'
 
     }
+}
+def cmakepathDir
+if (org.gradle.internal.os.OperatingSystem.current().isLinux()) {
+    cmakepathDir=new File("${projectDir}/cmake-linux")
+} else {
+    cmakepathDir=new File("${projectDir}/cmake-build")
+}
 
+
+task createCmakepathDirDir{
+    cmakepathDir.mkdirs()
+}
+task configureLibs(type:Exec,dependsOn:['createCmakepathDirDir']){
+    commandLine 'cmake'
+    args '-D' ,'BUILD_DX12=OFF', '-D', 'BUILD_EXAMPLES=OFF', '-B' , cmakepathDir.absolutePath
+}
+task buildL(type:Exec,dependsOn:[]){
+    commandLine 'cmake'
+    args  '--build', cmakepathDir.absolutePath, '--config', 'Release'
 
 }

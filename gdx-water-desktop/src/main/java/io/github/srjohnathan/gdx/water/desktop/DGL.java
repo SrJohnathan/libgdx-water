@@ -66,6 +66,8 @@ public class DGL implements GL {
 
     @Override
     public int createDepthBufferAttachment(int width, int height) {
+
+
         int depthBuffer = GL30.glGenRenderbuffers();
         GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, depthBuffer);
         GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, GL11.GL_DEPTH_COMPONENT, width,
@@ -73,6 +75,9 @@ public class DGL implements GL {
         GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER, depthBuffer);
         return depthBuffer;
     }
+
+    @Override
+    public int glGetProgrami(int program, int glInt) {return GL20.glGetProgrami(program, glInt);}
 
 
 }

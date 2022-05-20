@@ -109,9 +109,9 @@ public class WaterShader extends ShaderProgram {
     public static  final  String GET_VERTEX (){
 
         if(Gdx.app.getType() == Application.ApplicationType.Android){
-            return  Gdx.files.internal("data/shader/waterVertex.vert").readString();
+            return  Gdx.files.classpath("io/github/srjohnathan/gdx/water/assets/waterVertex.vert").readString();
         }else {
-            return  Gdx.files.internal("data/shader/vt.vsh").readString();
+            return  Gdx.files.classpath("io/github/srjohnathan/gdx/water/assets/vt.vsh").readString();
         }
 
     }
@@ -119,9 +119,9 @@ public class WaterShader extends ShaderProgram {
     public static  final  String GET_FRAGMENT (){
 
         if(Gdx.app.getType() == Application.ApplicationType.Android){
-            return  Gdx.files.internal("data/shader/waterFragment.frag").readString();
+            return  Gdx.files.classpath("io/github/srjohnathan/gdx/water/assets/waterFragment.frag").readString();
         }else {
-            return  Gdx.files.internal("data/shader/ft.fsh").readString();
+            return  Gdx.files.classpath("io/github/srjohnathan/gdx/water/assets/ft.fsh").readString();
         }
 
     }

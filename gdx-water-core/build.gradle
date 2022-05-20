@@ -1,3 +1,5 @@
+import java.sql.DriverManager
+
 plugins {
     id 'java-library'
     id 'maven-publish'
@@ -7,6 +9,8 @@ plugins {
 group 'io.github.srjohnathan'
 version '1.0-SNAPSHOT'
 def  isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+
 
 repositories {
     mavenCentral()
@@ -39,7 +43,7 @@ publishing {
 
 
             pom {
-                name = "gdx-effekseer"
+                name = project.name
                 description = "Dedicated library for using Effekseer particle tools in libGDX"
                 url = "https://github.com/SrJohnathan/gdx-effekseer"
                 licenses {
@@ -66,7 +70,7 @@ publishing {
     }
     repositories {
         maven {
-            name = "gdx-effekseer"
+            name = project.name
 
             def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
@@ -89,3 +93,16 @@ signing {
 tasks.withType(Sign) {
     onlyIf { isReleaseVersion }
 }
+
+
+
+def coreWrapperDir=new File("${projectDir}/src/main/java/io/github/srjohnathan/gdx/water/fftw")
+task createCoreWrapperDir{
+    coreWrapperDir.mkdirs()
+}
+
+task runSwig(type:Exec, dependsOn:['createCoreWrapperDir']){
+    commandLine 'swig'
+    args '-c++', '-java', '-package', 'io.github.srjohnathan.gdx.water.fftw', '-outdir', coreWrapperDir.absolutePath, '-o',"${rootProject.projectDir}/cpp/dll.cpp", "${rootProject.projectDir}/jni/st.i"
+}
+

@@ -3,6 +3,10 @@ package io.github.srjohnathan.gdx.water.core;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.GLFrameBuffer;
 import com.badlogic.gdx.math.Matrix4;
@@ -13,8 +17,8 @@ import java.util.List;
 
 public class WaterRenderer {
 
-    private static final String DUDV_MAP = "data/shader/waterDUDV.png";
-    private static final String NORMAL_MAP = "data/shader/waterNormalMap.png";
+    private static final String DUDV_MAP = "io/github/srjohnathan/gdx/water/assets/waterDUDV.png";
+    private static final String NORMAL_MAP = "io/github/srjohnathan/gdx/water/assets/waterNormalMap.png";
     private static final float WAVE_SPEED = 0.08f;
 
     private RawModel quad;
@@ -28,19 +32,20 @@ public class WaterRenderer {
     private int normalMapTexture;
 
     private FrameBuffer fbo1,fbo2;
+    private Model model;
 
     public WaterRenderer(Loader loader, WaterShader shader, Matrix4 projectionMatrix, WaterFrameBuffers fbos) {
         this.shader = shader;
         this.fbos = fbos;
 
         if(Gdx.app.getType() == Application.ApplicationType.Android){
-            dudvTexture = loader.loadTextureNative( Gdx.files.internal( DUDV_MAP).path());
-            normalMapTexture = loader.loadTextureNative(Gdx.files.internal( NORMAL_MAP).path());
+            dudvTexture = loader.loadTextureNative( Gdx.files.classpath( DUDV_MAP).path());
+            normalMapTexture = loader.loadTextureNative(Gdx.files.classpath( NORMAL_MAP).path());
 
 
         }else {
-            dudvTexture = loader.loadTextureNative( Gdx.files.internal( DUDV_MAP).path());
-            normalMapTexture = loader.loadTextureNative(Gdx.files.internal( NORMAL_MAP).path());
+            dudvTexture = loader.loadTextureNative( Gdx.files.classpath( DUDV_MAP).path());
+            normalMapTexture = loader.loadTextureNative(Gdx.files.classpath( NORMAL_MAP).path());
         }
 
 
@@ -56,6 +61,12 @@ public class WaterRenderer {
         builder.addBasicColorTextureAttachment(Pixmap.Format.RGBA8888);
         fbo2 = builder.build();
 
+        ModelBuilder  modelBuilder = new ModelBuilder();
+      model = modelBuilder.createBox(5f, 5f, 5f,
+                new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+
+
     }
 
     public void render(List<WaterTile> water, Camera35 camera, Light sun) {
@@ -67,7 +78,10 @@ public class WaterRenderer {
         prepareRender(camera, sun);
         for (WaterTile tile : water) {
             Matrix4 modelMatrix = Maths.createTransformationMatrixA(new Vector3(tile.getX(), tile.getHeight(), tile.getZ()), 5, 5, 5, 4f);
-            shader.loadModelMatrix(modelMatrix);
+         //   shader.loadModelMatrix(modelMatrix);
+
+             shader.loadModelMatrix(model.nodes.first().calculateLocalTransform());
+
             CGL.newInstance().glDrawArrays(Gdx.gl.GL_TRIANGLES, 0, quad.getVertexCount());
 
 

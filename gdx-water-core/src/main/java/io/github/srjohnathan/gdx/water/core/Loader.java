@@ -166,7 +166,6 @@ public class Loader {
         ByteBuffer bb = ByteBuffer.allocateDirect(size*4);
         bb.order(ByteOrder.nativeOrder());
         FloatBuffer buffer = bb.asFloatBuffer();
-
         return buffer;
     }
 

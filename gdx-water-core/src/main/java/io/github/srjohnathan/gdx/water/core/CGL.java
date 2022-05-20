@@ -234,5 +234,10 @@ public class CGL implements GL {
         return 0;
     }
 
+    @Override
+    public int glGetProgrami(int program, int glInt) {
+        return 0;
+    }
+
 
 }

@@ -5,11 +5,14 @@ import android.app.Activity;
 import android.opengl.GLES11;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
+import android.opengl.GLES31;
 import android.os.Build;
 import android.widget.Toast;
 import io.github.srjohnathan.gdx.water.core.GL;
 
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class AGL implements GL {
     @Override
@@ -85,6 +88,14 @@ public class AGL implements GL {
         GLES30.glRenderbufferStorage(GLES30.GL_RENDERBUFFER, GLES30.GL_DEPTH_COMPONENT16, width, height);
         GLES30.glFramebufferRenderbuffer(GLES30.GL_FRAMEBUFFER, GLES30.GL_DEPTH_ATTACHMENT, GLES30.GL_RENDERBUFFER, depthBuffer[0]);
         return depthBuffer[0];
+    }
+
+    @Override
+    public int glGetProgrami(int program, int glInt) {
+        IntBuffer b = IntBuffer.allocate(1);
+        GLES20.glGetProgramiv(program, glInt,b);
+        return b.get();
+
     }
 
 

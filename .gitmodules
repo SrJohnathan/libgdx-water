@@ -1,0 +1,6 @@
+[submodule "cpp/fftw3"]
+	path = cpp/fftw3
+	url = https://github.com/FFTW/fftw3.git
+[submodule "cpp/glm"]
+	path = cpp/glm
+	url = https://github.com/g-truc/glm.git

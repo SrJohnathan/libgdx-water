@@ -11,5 +11,5 @@ public interface GL {
    int createTextureAttachment(int width, int height);
  int createDepthTextureAttachment(int width, int height);
  int createDepthBufferAttachment(int width, int height);
-
+ int glGetProgrami(int program ,int glInt);
 }
